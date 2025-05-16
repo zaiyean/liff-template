@@ -2,38 +2,43 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>予約フォーム</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約テンプレート送信</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    .message {
+      font-size: 1.2em;
+    }
+  </style>
 </head>
 <body>
-  <h2>ご予約フォーム</h2>
-  <form id="form">
-    <p>① お名前：<br><input type="text" id="name"></p>
-    <p>② ご注文内容と個数：<br><input type="text" id="order"></p>
-    <p>③ 来店予定時間：<br><input type="text" id="time"></p>
-    <button type="submit">送信</button>
-  </form>
+  <div class="message">テンプレートを送信しています…</div>
 
   <script>
     async function main() {
-      await liff.init({ liffId: "ここにLIFF IDを入力" });
+      await liff.init({ liffId: 2007428408-yeYgPwlr });
+
       if (!liff.isInClient()) {
-        alert("LINEアプリから開いてください");
+        document.querySelector('.message').innerText = "LINEアプリから開いてください。";
         return;
       }
 
-      document.getElementById("form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const name = document.getElementById("name").value || "（未入力）";
-        const order = document.getElementById("order").value || "（未入力）";
-        const time = document.getElementById("time").value || "（未入力）";
-
-        const message = `【ご予約】\n① お名前：${name}\n② ご注文内容：${order}\n③ 来店予定時間：${time}`;
-
-        await liff.sendMessages([{ type: "text", text: message }]);
+      try {
+        await liff.sendMessages([
+          {
+            type: "text",
+            text: "【ご予約】\n① お名前：\n② ご注文内容：\n③ 来店時間："
+          }
+        ]);
         liff.closeWindow();
-      });
+      } catch (err) {
+        console.error(err);
+        document.querySelector('.message').innerText = "メッセージの送信に失敗しました。";
+      }
     }
 
     main();
