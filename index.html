@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>予約テンプレート送信</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+</head>
+<body>
+  <p>テンプレート送信中です...</p>
+  <script>
+    async function main() {
+      await liff.init({ liffId: 2007428408-yeYgPwlr });
+      if (!liff.isInClient()) {
+        alert("LINEアプリから開いてください。");
+        return;
+      }
+      await liff.sendMessages([
+        {
+          type: "text",
+          text: "【ご予約】\n①お名前\n②ご注文内容と個数\n③来店予定時間"
+        }
+      ]);
+      liff.closeWindow();
+    }
+    main();
+  </script>
+</body>
+</html>
